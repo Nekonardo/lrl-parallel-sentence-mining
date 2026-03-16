@@ -5,6 +5,8 @@
 results/
 sampleResults/
 sampleData/
+temp/
+data/
 
 # Python
 __pycache__/
