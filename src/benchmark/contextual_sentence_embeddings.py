@@ -1,4 +1,6 @@
 import argparse
+import os
+import sys
 import numpy as np
 import re
 import sentencepiece
@@ -14,12 +16,14 @@ from transformers import XLMRobertaModel, XLMRobertaTokenizer, AutoConfig, AutoM
 from sentence_transformers import SentenceTransformer
 # BertModel, BertTokenizer, XLMModel, XLMTokenizer, RobertaModel, RobertaTokenizer, XLMRobertaModel, XLMRobertaTokenizer, AutoConfig, AutoModel, AutoTokenizer
 
+_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(_SCRIPT_DIR, '../../third_party/PaSeMiLL/code'))
 import utils as utils
 
 
 ### MODIFY PATH ###
-# PRETRAINING_PATH = '../pretraining_test/modelling/output-hsb' # With HSB & DE
-PRETRAINING_PATH = '../pretraining_test/modelling/output-hsb-para-cs'  # with HSB & DE, and a parallel DE-CS dataset
+# PRETRAINING_PATH = os.path.join(_SCRIPT_DIR, '../../pretraining_test/modelling/output-hsb') # With HSB & DE
+PRETRAINING_PATH = os.path.join(_SCRIPT_DIR, '../../pretraining_test/modelling/output-hsb-para-cs')  # with HSB & DE, and a parallel DE-CS dataset
 
 
 def parse_args():
@@ -29,6 +33,8 @@ def parse_args():
     parser.add_argument('-m', '--model_name', type=str, required=True,
                         choices=['xlmr', 'glot500', 'pretrained', 'labse', 'mpnet', 'multi-qa-mpnet', 'laser2', 'mmbert'],
                         help='Embedding model')
+    parser.add_argument('--pretrained_path', type=str, default=None,
+                        help='Override PRETRAINING_PATH for the pretrained model')
 
     return parser.parse_args()
 
@@ -333,6 +339,10 @@ def main():
     # Input file
     input_file = open(args.input_file, 'r').read()
     split_file = utils.text_to_line(input_file)
+
+    if args.pretrained_path is not None:
+        global PRETRAINING_PATH
+        PRETRAINING_PATH = args.pretrained_path
 
     model_name = args.model_name  # 'pretrained' #'glot500' #'xlmr'
     print(f'Model to use: {model_name}')

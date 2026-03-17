@@ -7,6 +7,8 @@ sampleResults/
 sampleData/
 temp/
 data/
+configs/
+output/
 
 # Python
 __pycache__/

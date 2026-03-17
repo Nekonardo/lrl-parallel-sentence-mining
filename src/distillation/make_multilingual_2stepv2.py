@@ -93,7 +93,7 @@ def load_parallel_data(source_file: Path, target_file: Path, max_sentences: int 
     """
     Load parallel sentences from two text files (one sentence per line).
 
-    约定:
+    Assumption:
       - source_file: other language (cs or hsb)
       - target_file: German (de)
 
@@ -380,18 +380,18 @@ final_output_dir.parent.mkdir(parents=True, exist_ok=True)
 student_model.save(str(final_output_dir))
 logger.info(f"Final model (after Stage 2) saved to {final_output_dir}")
 
-# (Optional) Push to Hugging Face Hub
-model_name = student_model_name if "/" not in student_model_name else student_model_name.split("/")[-1]
-try:
-    student_model.push_to_hub(f"{model_name}-multilingual-cs-de-hsb-two-stage")
-except Exception:
-    logging.error(
-        "Error uploading model to the Hugging Face Hub:\n"
-        f"{traceback.format_exc()}"
-        "To upload it manually, run `huggingface-cli login`, then:\n"
-        f"  model = SentenceTransformer({repr(str(final_output_dir))})\n"
-        f"  model.push_to_hub('{model_name}-multilingual-cs-de-hsb-two-stage')"
-    )
+# # (Optional) Push to Hugging Face Hub
+# model_name = student_model_name if "/" not in student_model_name else student_model_name.split("/")[-1]
+# try:
+#     student_model.push_to_hub(f"{model_name}-multilingual-cs-de-hsb-two-stage")
+# except Exception:
+#     logging.error(
+#         "Error uploading model to the Hugging Face Hub:\n"
+#         f"{traceback.format_exc()}"
+#         "To upload it manually, run `huggingface-cli login`, then:\n"
+#         f"  model = SentenceTransformer({repr(str(final_output_dir))})\n"
+#         f"  model.push_to_hub('{model_name}-multilingual-cs-de-hsb-two-stage')"
+#     )
 
 logger.info("=" * 80)
 logger.info("Two-stage training completed!")
