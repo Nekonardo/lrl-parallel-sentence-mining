@@ -7,3 +7,6 @@
 [submodule "third_party/Belopsem"]
 	path = third_party/Belopsem
 	url = git@github.com:shuokabe/Belopsem.git
+[submodule "third_party/llms-limited-resources2025"]
+	path = third_party/llms-limited-resources2025
+	url = git@github.com:TUM-NLP/llms-limited-resources2025.git
